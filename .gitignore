@@ -3,7 +3,7 @@ venv/
 
 # Data files (large — will use DVC later)
 data/raw/
-data/processed/
+data/processed/*.csv
 
 # Python cache
 __pycache__/
@@ -25,6 +25,8 @@ mlruns/
 # DVC cache
 .dvc/cache/
 
-data/features/
+data/features/*
+!data/features/*.dvc
 
-models/
+models/*
+!models/*.dvc
