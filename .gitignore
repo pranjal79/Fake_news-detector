@@ -24,3 +24,5 @@ mlruns/
 
 # DVC cache
 .dvc/cache/
+
+data/features/
