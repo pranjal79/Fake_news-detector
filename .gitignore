@@ -26,3 +26,5 @@ mlruns/
 .dvc/cache/
 
 data/features/
+
+models/
