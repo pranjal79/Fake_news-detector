@@ -1,0 +1,23 @@
+# Data
+pandas
+numpy
+
+# NLP
+nltk
+scikit-learn
+
+# Database
+pymongo
+
+# Experiment Tracking
+mlflow
+dagshub
+
+# Data Versioning
+dvc
+dvc-gdrive
+
+# Utilities
+python-dotenv
+pyyaml
+tqdm

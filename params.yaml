@@ -1,0 +1,18 @@
+data:
+  raw_fake: "data/raw/Fake.csv"
+  raw_true: "data/raw/True.csv"
+  processed: "data/processed/processed_news.csv"
+
+mongodb:
+  uri: "mongodb://localhost:27017/"
+  db_name: "fake_news_db"
+  raw_collection: "raw_news"
+  processed_collection: "processed_news"
+
+tfidf:
+  max_features: 5000
+  ngram_range: [1, 2]
+
+model:
+  test_size: 0.2
+  random_state: 42
