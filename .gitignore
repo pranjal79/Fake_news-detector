@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+
+# Data files (large — will use DVC later)
+data/raw/
+data/processed/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# MLflow
+mlruns/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# DVC cache
+.dvc/cache/
