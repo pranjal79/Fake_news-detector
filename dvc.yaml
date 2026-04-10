@@ -1,0 +1,79 @@
+stages:
+
+  # ── Stage 1: Extract ──────────────────────────────────────
+  extract:
+    cmd: python -m src.etl.extract
+    deps:
+      - src/etl/extract.py
+      - data/raw/Fake.csv
+      - data/raw/True.csv
+    params:
+      - data.raw_fake
+      - data.raw_true
+    outs:
+      - data/interim/raw_combined.csv
+
+  # ── Stage 2: Transform ────────────────────────────────────
+  transform:
+    cmd: python -m src.etl.transform
+    deps:
+      - src/etl/transform.py
+      - data/interim/raw_combined.csv
+    params:
+      - data.processed
+    outs:
+      - data/processed/processed_news.csv
+
+  # ── Stage 3: Load to MongoDB ──────────────────────────────
+  load:
+    cmd: python -m src.etl.load
+    deps:
+      - src/etl/load.py
+      - data/interim/raw_combined.csv
+      - data/processed/processed_news.csv
+    params:
+      - mongodb.uri
+      - mongodb.db_name
+      - mongodb.raw_collection
+      - mongodb.processed_collection
+
+  # ── Stage 4: Feature Engineering ─────────────────────────
+  featurize:
+    cmd: python -m src.features.tfidf
+    deps:
+      - src/features/tfidf.py
+      - data/processed/processed_news.csv
+    params:
+      - tfidf.max_features
+      - tfidf.ngram_range
+      - model.test_size
+      - model.random_state
+    outs:
+      - data/features/X_train.npz
+      - data/features/X_test.npz
+      - data/features/y_train.npy
+      - data/features/y_test.npy
+      - data/features/tfidf_vectorizer.pkl
+
+  # ── Stage 5: Train Models ─────────────────────────────────
+  train:
+    cmd: python -m src.models.train
+    deps:
+      - src/models/train.py
+      - src/models/evaluate.py
+      - data/features/X_train.npz
+      - data/features/X_test.npz
+      - data/features/y_train.npy
+      - data/features/y_test.npy
+    params:
+      - model.test_size
+      - model.random_state
+      - tfidf.max_features
+      - mlflow.experiment_name
+    outs:
+      - models/LogisticRegression.pkl
+      - models/NaiveBayes.pkl
+      - models/SVM.pkl
+    metrics:
+      - reports/metrics.json:
+          cache: false

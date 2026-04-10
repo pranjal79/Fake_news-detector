@@ -93,18 +93,25 @@ def save_processed_data(df: pd.DataFrame) -> None:
     logger.info(f"Processed data saved to: {output_path}")
 
 if __name__ == "__main__":
-    from src.etl.extract import extract_data
+    import os
+    import pandas as pd
+    from src.utils.logger import get_logger
 
-    # Extract
-    raw_df = extract_data()
+    logger = get_logger(__name__)
 
-    # Transform
+    interim_path = "data/interim/raw_combined.csv"
+
+    # If running via DVC → read from interim
+    if os.path.exists(interim_path):
+        logger.info(f"Reading from interim: {interim_path}")
+        raw_df = pd.read_csv(interim_path)
+    else:
+        logger.info("Interim file not found, running extract...")
+        from src.etl.extract import extract_data
+        raw_df = extract_data()
+
+    # Apply transformation
     processed_df = transform_data(raw_df)
 
-    # Preview
-    print(processed_df.head(3))
-    print(f"\nShape: {processed_df.shape}")
-    print(f"\nSample processed text:\n{processed_df['processed_text'][0]}")
-
-    # Save
+    # Save processed data
     save_processed_data(processed_df)

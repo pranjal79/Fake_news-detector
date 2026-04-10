@@ -1,5 +1,0 @@
-outs:
-- md5: 41dfe3c480b596f707c2fdced8d016dc
-  size: 160617
-  hash: md5
-  path: NaiveBayes.pkl

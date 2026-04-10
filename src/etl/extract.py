@@ -17,26 +17,37 @@ def extract_data() -> pd.DataFrame:
 
     logger.info(f"Loading Fake news from: {fake_path}")
     fake_df = pd.read_csv(fake_path)
-    fake_df["label"] = 0  # 0 = Fake
+    fake_df["label"] = 0  # Fake
 
     logger.info(f"Loading True news from: {true_path}")
     true_df = pd.read_csv(true_path)
-    true_df["label"] = 1  # 1 = Real
+    true_df["label"] = 1  # Real
 
-    logger.info(f"Fake records: {len(fake_df)} | True records: {len(true_df)}")
+    logger.info(f"Fake: {len(fake_df)} | True: {len(true_df)}")
 
-    # Combine both
+    # Merge datasets
     df = pd.concat([fake_df, true_df], ignore_index=True)
 
-    # Shuffle
+    # Shuffle dataset
     df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
-    logger.info(f"Total records after merge: {len(df)}")
-    logger.info(f"Columns: {df.columns.tolist()}")
+    logger.info(f"Total records: {len(df)}")
+
+    # ── Save interim output for DVC pipeline ────────────────
+    os.makedirs("data/interim", exist_ok=True)
+    interim_path = "data/interim/raw_combined.csv"
+
+    df.to_csv(interim_path, index=False)
+    logger.info(f"Saved interim data → {interim_path}")
 
     return df
 
+
 if __name__ == "__main__":
     df = extract_data()
-    print(df.head())
-    print(df["label"].value_counts())
+
+    logger.info("\nSample Data:")
+    logger.info(df.head())
+
+    logger.info("\nLabel Distribution:")
+    logger.info(df["label"].value_counts())
