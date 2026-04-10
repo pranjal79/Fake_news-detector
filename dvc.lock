@@ -1,0 +1,156 @@
+schema: '2.0'
+stages:
+  extract:
+    cmd: python -m src.etl.extract
+    deps:
+    - path: data/raw/Fake.csv
+      hash: md5
+      md5: edcb323a8ed3e9f4d5d84016553009eb
+      size: 62789876
+    - path: data/raw/True.csv
+      hash: md5
+      md5: 4c3c571205b62c7591c451cfe60d6af1
+      size: 53582940
+    - path: src/etl/extract.py
+      hash: md5
+      md5: 60b7b164762fb4375af163eaa95d0e86
+      size: 1481
+    params:
+      params.yaml:
+        data.raw_fake: data/raw/Fake.csv
+        data.raw_true: data/raw/True.csv
+    outs:
+    - path: data/interim/raw_combined.csv
+      hash: md5
+      md5: 429ff488fa99e5e211170f4b2d6ad9bd
+      size: 116462593
+  transform:
+    cmd: python -m src.etl.transform
+    deps:
+    - path: data/interim/raw_combined.csv
+      hash: md5
+      md5: 429ff488fa99e5e211170f4b2d6ad9bd
+      size: 116462593
+    - path: src/etl/transform.py
+      hash: md5
+      md5: f9814518b9d77352c29b38725366f4be
+      size: 4232
+    params:
+      params.yaml:
+        data.processed: data/processed/processed_news.csv
+    outs:
+    - path: data/processed/processed_news.csv
+      hash: md5
+      md5: dfb7651e5e7574f7df1ea84d4e8566f0
+      size: 309030685
+  load:
+    cmd: python -m src.etl.load
+    deps:
+    - path: data/interim/raw_combined.csv
+      hash: md5
+      md5: 429ff488fa99e5e211170f4b2d6ad9bd
+      size: 116462593
+    - path: data/processed/processed_news.csv
+      hash: md5
+      md5: dfb7651e5e7574f7df1ea84d4e8566f0
+      size: 309030685
+    - path: src/etl/load.py
+      hash: md5
+      md5: 706b18a94973e377a4baf32140201f01
+      size: 4263
+    params:
+      params.yaml:
+        mongodb.db_name: fake_news_db
+        mongodb.processed_collection: processed_news
+        mongodb.raw_collection: raw_news
+        mongodb.uri: mongodb://localhost:27017/
+  featurize:
+    cmd: python -m src.features.tfidf
+    deps:
+    - path: data/processed/processed_news.csv
+      hash: md5
+      md5: dfb7651e5e7574f7df1ea84d4e8566f0
+      size: 309030685
+    - path: src/features/tfidf.py
+      hash: md5
+      md5: 375bc57afbc27f0d69ad042da7262348
+      size: 5169
+    params:
+      params.yaml:
+        model.random_state: 42
+        model.test_size: 0.2
+        tfidf.max_features: 5000
+        tfidf.ngram_range:
+        - 1
+        - 2
+    outs:
+    - path: data/features/X_test.npz
+      hash: md5
+      md5: d7ef4e0379927dde7f52e82b063d9c86
+      size: 11062048
+    - path: data/features/X_train.npz
+      hash: md5
+      md5: 4d0e3386b5fd7e7cae8d5975c65af86a
+      size: 45894193
+    - path: data/features/tfidf_vectorizer.pkl
+      hash: md5
+      md5: 8de0ff775be19aa312bd3c46bdab1b0f
+      size: 189790
+    - path: data/features/y_test.npy
+      hash: md5
+      md5: 25a20edf298e1e8d78186f71e06f119a
+      size: 71952
+    - path: data/features/y_train.npy
+      hash: md5
+      md5: bee3bf2d8fb2f987ba00a274ce1ba9c9
+      size: 287416
+  train:
+    cmd: python -m src.models.train
+    deps:
+    - path: data/features/X_test.npz
+      hash: md5
+      md5: d7ef4e0379927dde7f52e82b063d9c86
+      size: 11062048
+    - path: data/features/X_train.npz
+      hash: md5
+      md5: 4d0e3386b5fd7e7cae8d5975c65af86a
+      size: 45894193
+    - path: data/features/y_test.npy
+      hash: md5
+      md5: 25a20edf298e1e8d78186f71e06f119a
+      size: 71952
+    - path: data/features/y_train.npy
+      hash: md5
+      md5: bee3bf2d8fb2f987ba00a274ce1ba9c9
+      size: 287416
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: 4051543267e22244d65f9aef90be2e25
+      size: 1227
+    - path: src/models/train.py
+      hash: md5
+      md5: cb30217b0ed1ebe9ccc73ffe00af6529
+      size: 5498
+    params:
+      params.yaml:
+        mlflow.experiment_name: fake-news-detection
+        model.random_state: 42
+        model.test_size: 0.2
+        tfidf.max_features: 5000
+    outs:
+    - path: models/LogisticRegression.pkl
+      hash: md5
+      md5: c8df6b2e30b5e7caf663d463365e8739
+      size: 40711
+    - path: models/NaiveBayes.pkl
+      hash: md5
+      md5: 41dfe3c480b596f707c2fdced8d016dc
+      size: 160617
+    - path: models/SVM.pkl
+      hash: md5
+      md5: 4efd12414da77cd50fd0bd63918cf99e
+      size: 202235
+    - path: reports/metrics.json
+      hash: md5
+      md5: c594dbb7c34444965a8c0f6a6a2c67e3
+      size: 451

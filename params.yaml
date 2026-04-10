@@ -16,3 +16,7 @@ tfidf:
 model:
   test_size: 0.2
   random_state: 42
+
+mlflow:
+  tracking_uri: "https://dagshub.com/pranjal79/Fake_news-detector.mlflow"
+  experiment_name: "fake-news-detection"
