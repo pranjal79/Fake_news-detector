@@ -21,3 +21,6 @@ dvc-gdrive
 python-dotenv
 pyyaml
 tqdm
+
+#App
+streamlit
