@@ -1,27 +1,44 @@
 import streamlit as st
+import os
+import nltk
 
-# Try importing predictor safely
+# ── NLTK setup (VERY IMPORTANT for deployment) ─────────────
+nltk_data_dir = os.path.join(os.path.dirname(__file__), "nltk_data")
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.insert(0, nltk_data_dir)
+
+try:
+    nltk.download("punkt", download_dir=nltk_data_dir, quiet=True)
+    nltk.download("stopwords", download_dir=nltk_data_dir, quiet=True)
+    nltk.download("wordnet", download_dir=nltk_data_dir, quiet=True)
+except:
+    pass
+
+
+# ── Try importing model utils safely ─────────────
 try:
     from app.utils.predictor import predict, get_available_models
     MODEL_AVAILABLE = True
-except:
+except Exception as e:
     MODEL_AVAILABLE = False
+    IMPORT_ERROR = str(e)
 
 
-# ── Page config ─────────────────────────────
+# ── Page config ─────────────
 st.set_page_config(
     page_title="Fake News Detector",
     page_icon="🔍",
     layout="centered"
 )
 
-# ── Header ─────────────────────────────
+# ── Header ─────────────
 st.title("🔍 Fake News Detector")
 st.write("Paste any news article or headline — AI will verify it instantly")
 
 st.markdown("---")
 
-# ── Sidebar ─────────────────────────────
+
+# ── Sidebar ─────────────
 with st.sidebar:
     st.header("⚙️ Settings")
 
@@ -32,7 +49,8 @@ with st.sidebar:
 
     selected_model = st.selectbox("Choose Model", models)
 
-# ── Input ─────────────────────────────
+
+# ── Input ─────────────
 user_input = st.text_area(
     "Enter News Text",
     height=200,
@@ -41,30 +59,42 @@ user_input = st.text_area(
 
 predict_btn = st.button("🔍 Analyze News")
 
-# ── Prediction ─────────────────────────────
+
+# ── Prediction ─────────────
 if predict_btn:
 
     if not user_input.strip():
-        st.warning("Please enter some text")
+        st.warning("⚠️ Please enter some text")
 
     else:
         if not MODEL_AVAILABLE:
-            st.error("⚠️ Model files not found. Deployment mode active.")
-            st.info("UI is working but model is not loaded.")
+            st.error("⚠️ Model not available")
+            st.info("This is deployment mode — model files are missing or import failed.")
+            
+            # Debug info (optional for you)
+            with st.expander("Show error details"):
+                st.code(IMPORT_ERROR)
+
         else:
-            result = predict(user_input, model_name=selected_model)
+            try:
+                result = predict(user_input, model_name=selected_model)
 
-            if result["error"]:
-                st.error(result["error"])
-            else:
-                label = result["label"]
-                confidence = result["confidence"]
-
-                if label == "FAKE":
-                    st.error(f"🚨 FAKE NEWS ({confidence}%)")
+                if result["error"]:
+                    st.error(result["error"])
                 else:
-                    st.success(f"✅ REAL NEWS ({confidence}%)")
+                    label = result["label"]
+                    confidence = result["confidence"]
 
-# ── Footer ─────────────────────────────
+                    if label == "FAKE":
+                        st.error(f"🚨 FAKE NEWS ({confidence}%)")
+                    else:
+                        st.success(f"✅ REAL NEWS ({confidence}%)")
+
+            except Exception as e:
+                st.error("Prediction failed")
+                st.code(str(e))
+
+
+# ── Footer ─────────────
 st.markdown("---")
 st.caption("Built with Streamlit · NLP · ML")
