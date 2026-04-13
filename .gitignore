@@ -36,3 +36,6 @@ data/interim/
 models/
 data/features/
 *.pkl
+
+mlflow.db
+*.db
