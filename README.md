@@ -1,14 +1,14 @@
 ---
-title: Streamlit Template Space
+title: Fake News Detector
 emoji: 🚀
 colorFrom: red
 colorTo: red
 sdk: docker
 app_port: 8501
 tags:
-  - streamlit
+- streamlit
 pinned: false
-short_description: Streamlit template space
+short_description: fake_news_detector
 ---
 
 # Welcome to Streamlit!
