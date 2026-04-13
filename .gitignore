@@ -32,3 +32,7 @@ models/*
 !models/*.dvc
 
 data/interim/
+
+models/
+data/features/
+*.pkl

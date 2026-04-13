@@ -1,7 +1,7 @@
 import os
 import pickle
 import numpy as np
-from app.utils.preprocess import preprocess_input
+from utils.preprocess import preprocess_input
 
 # ── Paths ────────────────────────────────────────────────────────────
 BASE_DIR       = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))

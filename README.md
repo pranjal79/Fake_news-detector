@@ -1,212 +1,83 @@
+---
+title: Fake News Detector
+emoji: 🔍
+colorFrom: indigo
+colorTo: purple
+sdk: streamlit
+sdk_version: 1.32.0
+app_file: app.py
+pinned: false
+license: mit
+---
 
+# 🔍 Fake News Detector
 
-## 📌 Project Overview
+A production-level **Fake News Detection web app** built using NLP and Machine Learning.
 
-This is a **production-level Fake News Detection system** built using NLP and MLOps practices.
-
-The project detects whether a news article is **Fake (0)** or **Real (1)** using machine learning models trained on a Kaggle dataset.
-
-### 🔥 Key Features:
-
-* End-to-end ETL pipeline
-* NLP preprocessing (cleaning, tokenization, stopword removal)
-* TF-IDF feature engineering
-* Multiple model training & comparison
-* Experiment tracking using MLflow + DagsHub
-* Data versioning using DVC
-* Fully reproducible pipeline (`dvc repro`)
+This application predicts whether a news article is **Fake (0)** or **Real (1)** using trained ML models.
 
 ---
 
-## 🗂️ Project Structure
+## 🚀 Live App Features
 
-```
-fake_news_detector/
-├── data/
-│   ├── raw/
-│   ├── interim/
-│   ├── processed/
-│   └── features/
-├── models/
-├── reports/
-├── src/
-│   ├── etl/
-│   ├── features/
-│   ├── models/
-│   └── utils/
-├── dvc.yaml
-├── params.yaml
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 📦 Dataset
-
-Fake and Real News Dataset (Kaggle):
-https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset
-
-| File     | Records | Label |
-| -------- | ------- | ----- |
-| Fake.csv | ~23,000 | 0     |
-| True.csv | ~21,000 | 1     |
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone the Repository
-
-```
-git clone https://github.com/pranjal79/Fake_news-detector.git
-cd Fake_news-detector
-```
-
----
-
-### 2. Create Virtual Environment
-
-```
-python -m venv venv
-venv\Scripts\activate
-```
-
----
-
-### 3. Install Dependencies
-
-```
-pip install -r requirements.txt
-```
-
----
-
-### 4. Download NLTK Data
-
-```
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
-```
-
----
-
-### 5. Setup Environment Variables
-
-Create `.env` file:
-
-```
-DAGSHUB_USERNAME=your_username
-DAGSHUB_TOKEN=your_token
-MLFLOW_TRACKING_URI=https://dagshub.com/pranjal79/Fake_news-detector.mlflow
-```
-
----
-
-### 6. Start MongoDB
-
-```
-net start MongoDB
-```
-
----
-
-## 🚀 Run the Pipeline
-
-### Run full pipeline:
-
-```
-dvc repro
-```
+- 📰 Enter any news text and get instant prediction
+- 🤖 Uses trained ML models (SVM, Logistic Regression, Naive Bayes)
+- 📊 Displays prediction confidence
+- ⚡ Fast and interactive Streamlit UI
+- 🧠 NLP preprocessing (cleaning, stopwords removal, lemmatization)
 
 ---
 
 ## 🧪 Models Used
 
-| Model               | Accuracy  | F1 Score   |
-| ------------------- | --------- | ---------- |
-| Logistic Regression | 0.993     | 0.993      |
-| Naive Bayes         | 0.956     | 0.954      |
-| SVM                 | **0.997** | **0.9968** |
+| Model               | Accuracy  |
+|--------------------|----------|
+| SVM (Best)         | ~99.7%   |
+| Logistic Regression| ~99.3%   |
+| Naive Bayes        | ~95.6%   |
 
 🏆 **Best Model: SVM**
 
 ---
 
-## 📊 Metrics
-
-View metrics using:
-
-```
-dvc metrics show
-```
-
----
-
-## 🔁 Data Versioning
-
-```
-dvc pull
-dvc push
-dvc status
-```
-
----
-
-## 🗄️ MongoDB
-
-Database: `fake_news_db`
-
-Collections:
-
-* `raw_news`
-* `processed_news`
-
----
-
-## 📈 Experiment Tracking
-
-Tracked using MLflow + DagsHub:
-https://dagshub.com/pranjal79/Fake_news-detector
-
----
-
 ## 🛠️ Tech Stack
 
-* Python
-* NLTK
-* Scikit-learn
-* MongoDB
-* MLflow
-* DVC
-* DagsHub
+- Python
+- Streamlit
+- Scikit-learn
+- NLTK
+- Pandas & NumPy
 
 ---
 
-## 👤 Author
+## 📦 Dataset
+
+Fake and Real News Dataset (Kaggle):  
+https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset
+
+---
+
+## ⚠️ Note
+
+This is a **deployed version of the project**.  
+Some components like:
+- DVC
+- MLflow
+- MongoDB
+
+are **not required for deployment** and are excluded here.
+
+---
+
+## 👨‍💻 Author
 
 **Pranjal Panigrahi**
 
-* GitHub: https://github.com/pranjal79
-* DagsHub: https://dagshub.com/pranjal79
+- GitHub: https://github.com/pranjal79  
+- DagsHub: https://dagshub.com/pranjal79  
 
 ---
 
-## 🎯 Project Highlights
+## ⭐ If you like this project
 
-* Built a complete MLOps pipeline
-* Automated workflow using DVC
-* Achieved ~99.7% accuracy using SVM
-* Integrated experiment tracking with MLflow
-* Used MongoDB for scalable data storage
-
----
-
-## 🚀 Future Improvements
-
-* Deploy using Streamlit / FastAPI
-* Add deep learning models (LSTM, BERT)
-* Real-time news prediction API
-
----
-
-⭐ If you like this project, give it a star!
+Give it a ⭐ on GitHub and share it!
