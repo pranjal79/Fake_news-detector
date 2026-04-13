@@ -1,32 +1,15 @@
-<<<<<<< HEAD
 # Data
-pandas
-numpy
+pandas==2.2.0
+numpy==1.26.4
 
 # NLP
-nltk
-scikit-learn
-
-# Database
-pymongo
-
-# Experiment Tracking
-mlflow
-dagshub
-
-# Data Versioning
-dvc
-dvc-gdrive
+nltk==3.8.1
+scikit-learn==1.4.0
 
 # Utilities
 python-dotenv
 pyyaml
 tqdm
 
-#App
-streamlit
-=======
-altair
-pandas
-streamlit
->>>>>>> 9edb287f762230ab7415b5dd716e048c9afade02
+# App
+streamlit==1.32.0
