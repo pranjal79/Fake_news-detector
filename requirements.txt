@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Data
 pandas
 numpy
@@ -24,3 +25,8 @@ tqdm
 
 #App
 streamlit
+=======
+altair
+pandas
+streamlit
+>>>>>>> 9edb287f762230ab7415b5dd716e048c9afade02

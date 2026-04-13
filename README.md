@@ -1,5 +1,6 @@
 ---
 title: Fake News Detector
+<<<<<<< HEAD
 emoji: 🔍
 colorFrom: indigo
 colorTo: purple
@@ -81,3 +82,22 @@ are **not required for deployment** and are excluded here.
 ## ⭐ If you like this project
 
 Give it a ⭐ on GitHub and share it!
+=======
+emoji: 🚀
+colorFrom: red
+colorTo: red
+sdk: docker
+app_port: 8501
+tags:
+- streamlit
+pinned: false
+short_description: fake_news_detector
+---
+
+# Welcome to Streamlit!
+
+Edit `/src/streamlit_app.py` to customize this app to your heart's desire. :heart:
+
+If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
+forums](https://discuss.streamlit.io).
+>>>>>>> 9edb287f762230ab7415b5dd716e048c9afade02
